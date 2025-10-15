@@ -1,0 +1,2 @@
+# Persistent RNode device mapping
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="rnode0"
