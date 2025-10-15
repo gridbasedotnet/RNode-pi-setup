@@ -1,0 +1,43 @@
+#!/bin/bash
+# Gridbase Stop — Safe shutdown for Reticulum + NomadNet
+
+echo ""
+echo "=== Gridbase Network Shutdown ==="
+
+echo "[1/3] Stopping any active NomadNet sessions..."
+pids=$(pgrep -f "nomadnet")
+if [ -n "$pids" ]; then
+    echo "    Found NomadNet PIDs: $pids"
+    kill $pids
+    sleep 2
+    echo "    ✓ NomadNet stopped."
+else
+    echo "    No NomadNet processes running."
+fi
+
+echo "[2/3] Stopping Reticulum daemon (rnsd)..."
+rpid=$(pgrep -x "rnsd")
+if [ -n "$rpid" ]; then
+    echo "    Found rnsd PID: $rpid"
+    kill $rpid
+    sleep 2
+    echo "    ✓ Reticulum stopped."
+else
+    echo "    No rnsd process found."
+fi
+
+echo "[3/3] Verifying shutdown..."
+if pgrep -x "rnsd" >/dev/null || pgrep -f "nomadnet" >/dev/null; then
+    echo "⚠ Some processes are still running. Forcing termination..."
+    pkill -f nomadnet
+    pkill -x rnsd
+    echo "    ✓ Forced stop complete."
+else
+    echo "    All processes successfully stopped."
+fi
+
+echo ""
+echo "[✓] Gridbase Network fully shut down."
+echo ""
+echo "Post-shutdown Reticulum status:"
+rnstatus
