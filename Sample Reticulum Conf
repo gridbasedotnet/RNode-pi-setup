@@ -1,0 +1,41 @@
+
+---
+
+## 📄 `config/reticulum.conf`
+(From your working version)
+
+```ini
+[reticulum]
+transport_enabled = yes
+shared_instance_enabled = yes
+storagepath = /home/gridbase/.reticulum/storage
+
+[interfaces]
+
+[[RNS Testnet Amsterdam]]
+type = TCPClientInterface
+enabled = yes
+target_host = amsterdam.connect.reticulum.network
+target_port = 4965
+outgoing = yes
+
+[[Default Interface]]
+type = AutoInterface
+enabled = yes
+
+[[Gridbase Public Node]]
+type = TCPServerInterface
+enabled = yes
+bind_host = 0.0.0.0
+bind_port = 4965
+
+[[Gridbase RNode]]
+type = RNodeInterface
+enabled = yes
+port = /dev/rnode0
+frequency = 915000000
+bandwidth = 125000
+txpower = 17
+spreadingfactor = 7
+codingrate = 5
+mode = full
