@@ -38,4 +38,17 @@ git clone https://github.com/YOURUSERNAME/rnode-pi-setup.git
 cd rnode-pi-setup
 sudo cp config/99-rnode.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules && sudo udevadm trigger
-
+#Then edit config/reticulum.conf to match your environment, and move it to:
+~/.reticulum/config
+#Make the scripts executable
+chmod +x scripts/start scripts/stop
+#Run your node:
+./scripts/start
+#Stop it:
+./scripts/stop
+#Example Network Flow
+[RNode 915MHz]  <--->  [Raspberry Pi: Reticulum + NomadNet]
+                                   |
+                          [LAN / TCP / Wi-Fi]
+                                   |
+                      [RNS Testnet or Other Peers]
