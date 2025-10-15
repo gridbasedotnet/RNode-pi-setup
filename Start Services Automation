@@ -1,0 +1,34 @@
+#!/bin/bash
+# Gridbase Runnet — Full stack launcher for Reticulum + NomadNet
+
+echo ""
+echo "=== Gridbase Runnet Launcher ==="
+echo "[1/5] Activating Python virtual environment..."
+source /home/gridbase/reticulum_venv/bin/activate
+
+echo "[2/5] Starting Reticulum (rnsd)..."
+if pgrep -x "rnsd" > /dev/null; then
+    echo "    rnsd already running."
+else
+    /home/gridbase/reticulum_venv/bin/rnsd &
+    sleep 5
+fi
+
+echo "[3/5] Waiting for Reticulum to initialize..."
+sleep 3
+
+echo "[4/5] Announcing NomadNet site..."
+nomadnet --announce
+if [ $? -eq 0 ]; then
+    echo "    ✅ Announcement successful."
+else
+    echo "    ⚠️  Announcement failed — check connection or site config."
+fi
+
+echo "[5/5] Displaying Reticulum status..."
+rnstatus
+
+echo ""
+echo "=== Launching NomadNet Terminal UI ==="
+cd ~
+nomadnet -t
